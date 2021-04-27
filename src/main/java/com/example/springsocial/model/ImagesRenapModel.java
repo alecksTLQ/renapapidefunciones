@@ -48,13 +48,7 @@ public class ImagesRenapModel implements Serializable{
 
 	public Long getStatusImagenes() {
 		return statusImagenes;
-	}
-
-	
-	
-
-	
-	
+	}	
 }
 	
 	
