@@ -140,8 +140,6 @@ public class TbitacoraController implements CrudController {
 			
 		try {
 			
-			
-			
 			try {
 				
 				key = datos.leerArchivo("clave");
@@ -150,7 +148,15 @@ public class TbitacoraController implements CrudController {
 				entidad = datos.leerArchivo("entidad");
 				
 				/*START RECUPERAR DATOS DEL WS*/
+				JSONParser parser = new JSONParser();
 				
+				Object datojson = parser.parse(new FileReader("C:\\Users\\Desarrollo06\\Documents\\apuntes\\archio.json"));
+				JSONObject contenedor = (JSONObject) datojson;
+				//almacena todo el arreglo de datos
+				JSONArray array = (JSONArray) contenedor.get("datos");
+				
+				//obtiene fila x fial del arreglo de datos
+				//JSONObject fila = (JSONObject) array.get(0);
 				
 				
 				/*END RECUPERAR DATOS DEL WS*/
@@ -196,10 +202,9 @@ public class TbitacoraController implements CrudController {
 				}catch(ParseException e) {
 					System.out.print(e);
 				}
-				
-				
-				
 				/*END PREPARAR BACKUP*/
+				
+				
 				
 				/*START INSERT BITACORA*/
 				
