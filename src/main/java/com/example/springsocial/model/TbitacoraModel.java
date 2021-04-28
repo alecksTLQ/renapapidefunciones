@@ -1,69 +1,95 @@
 package com.example.springsocial.model;
 
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="TBITACORA_WS_DPI")
 public class TbitacoraModel {
 	
+	
 	@Column(name="ESTATUS")
+	@NotEmpty
 	private String ESTATUS;
 	@Column(name="ENTREGA")
-	private Date ENTREGA;
+	@NotEmpty
+	private String ENTREGA;
 	@Id
+	@NotNull
 	@Column(name="TIPOENTREGA")
 	private Long tipoentrega;
+	@NotEmpty
 	@Column(name="FECHASEMISIONES")
-	private Date FECHASEMISIONES; 
+	private String FECHASEMISIONES;
+	@NotEmpty
 	@Column(name="FECHAINCONSUMO")
-	private Date FECHAINCONSUMO;  
+	private String FECHAINCONSUMO;
+	@NotEmpty
 	@Column(name="FECHAFINCONSUMO")
-	private Date FECHAFINCONSUMO;
-	@Column(name="TOTALREGCONSUMO")
+	private String FECHAFINCONSUMO;
+	
+	
+	/*@Column(name="TOTALREGCONSUMO")
 	private Integer TOTALREGCONSUMO;
 	@Column(name="FECININSERDATA")
-	private Date FECININSERDATA;
+	private String FECININSERDATA;
 	@Column(name="FECFININSERDATA")
-	private Date FECFININSERDATA;
+	private String FECFININSERDATA;
 	@Column(name="TOTALREGINSERDATA")
 	private Integer TOTALREGINSERDATA;
 	@Column(name="FECININSERTIMG")
-	private Date FECININSERTIMG;
+	private String FECININSERTIMG;
 	@Column(name="FECFININSERTIMG")
-	private Date FECFININSERTIMG;
+	private String FECFININSERTIMG;
 	@Column(name="ACTUALIZADOS")
 	private Integer ACTUALIZADOS;
 	@Column(name="NUEVOS")
 	private Integer NUEVOS;
 	@Column(name="FECINBACKDATA")
-	private Date FECINBACKDATA;
+	private String FECINBACKDATA;
 	@Column(name="FECFINBACKDATA")
-	private Date FECFINBACKDATA;
+	private String FECFINBACKDATA;
 	@Column(name="TOTALREGBACKDATA")
 	private Integer TOTALREGBACKDATA;
 	@Column(name="FECINBACKIMG")
-	private Date FECINBACKIMG;
+	private String FECINBACKIMG;
 	@Column(name="FECFINBACKIMG")
-	private Date FECFINBACKIMG;
+	private String FECFINBACKIMG;
 	@Column(name="TOTALREGBACKIMG")
-	private Integer TOTALREGBACKIMG;
+	private Integer TOTALREGBACKIMG;*/
 	
 	
+	
+	
+	public TbitacoraModel() {
+		
+	}
+	
+	public TbitacoraModel(@NotEmpty String eSTATUS, @NotEmpty String eNTREGA, @NotNull Long tipoentrega,
+			@NotEmpty String fECHASEMISIONES, @NotEmpty String fECHAINCONSUMO, @NotEmpty String fECHAFINCONSUMO) {
+		super();
+		ESTATUS = eSTATUS;
+		ENTREGA = eNTREGA;
+		this.tipoentrega = tipoentrega;
+		FECHASEMISIONES = fECHASEMISIONES;
+		FECHAINCONSUMO = fECHAINCONSUMO;
+		FECHAFINCONSUMO = fECHAFINCONSUMO;
+	}
+
 	public String getESTATUS() {
 		return ESTATUS;
 	}
 	public void setESTATUS(String eSTATUS) {
 		ESTATUS = eSTATUS;
 	}
-	public Date getENTREGA() {
+	public String getENTREGA() {
 		return ENTREGA;
 	}
-	public void setENTREGA(Date eNTREGA) {
+	public void setENTREGA(String eNTREGA) {
 		ENTREGA = eNTREGA;
 	}
 	
@@ -73,107 +99,23 @@ public class TbitacoraModel {
 	public void setTipoentrega(Long tipoentrega) {
 		this.tipoentrega = tipoentrega;
 	}
-	public Date getFECHASEMISIONES() {
+	public String getFECHASEMISIONES() {
 		return FECHASEMISIONES;
 	}
-	public void setFECHASEMISIONES(Date fECHASEMISIONES) {
+	public void setFECHASEMISIONES(String fECHASEMISIONES) {
 		FECHASEMISIONES = fECHASEMISIONES;
 	}
-	public Date getFECHAINCONSUMO() {
+	public String getFECHAINCONSUMO() {
 		return FECHAINCONSUMO;
 	}
-	public void setFECHAINCONSUMO(Date fECHAINCONSUMO) {
+	public void setFECHAINCONSUMO(String fECHAINCONSUMO) {
 		FECHAINCONSUMO = fECHAINCONSUMO;
 	}
-	public Date getFECHAFINCONSUMO() {
+	public String getFECHAFINCONSUMO() {
 		return FECHAFINCONSUMO;
 	}
-	public void setFECHAFINCONSUMO(Date fECHAFINCONSUMO) {
+	public void setFECHAFINCONSUMO(String fECHAFINCONSUMO) {
 		FECHAFINCONSUMO = fECHAFINCONSUMO;
 	}
-	public Integer getTOTALREGCONSUMO() {
-		return TOTALREGCONSUMO;
-	}
-	public void setTOTALREGCONSUMO(Integer tOTALREGCONSUMO) {
-		TOTALREGCONSUMO = tOTALREGCONSUMO;
-	}
-	public Date getFECININSERDATA() {
-		return FECININSERDATA;
-	}
-	public void setFECININSERDATA(Date fECININSERDATA) {
-		FECININSERDATA = fECININSERDATA;
-	}
-	public Date getFECFININSERDATA() {
-		return FECFININSERDATA;
-	}
-	public void setFECFININSERDATA(Date fECFININSERDATA) {
-		FECFININSERDATA = fECFININSERDATA;
-	}
-	public Integer getTOTALREGINSERDATA() {
-		return TOTALREGINSERDATA;
-	}
-	public void setTOTALREGINSERDATA(Integer tOTALREGINSERDATA) {
-		TOTALREGINSERDATA = tOTALREGINSERDATA;
-	}
-	public Date getFECININSERTIMG() {
-		return FECININSERTIMG;
-	}
-	public void setFECININSERTIMG(Date fECININSERTIMG) {
-		FECININSERTIMG = fECININSERTIMG;
-	}
-	public Date getFECFININSERTIMG() {
-		return FECFININSERTIMG;
-	}
-	public void setFECFININSERTIMG(Date fECFININSERTIMG) {
-		FECFININSERTIMG = fECFININSERTIMG;
-	}
-	public Integer getACTUALIZADOS() {
-		return ACTUALIZADOS;
-	}
-	public void setACTUALIZADOS(Integer aCTUALIZADOS) {
-		ACTUALIZADOS = aCTUALIZADOS;
-	}
-	public Integer getNUEVOS() {
-		return NUEVOS;
-	}
-	public void setNUEVOS(Integer nUEVOS) {
-		NUEVOS = nUEVOS;
-	}
-	public Date getFECINBACKDATA() {
-		return FECINBACKDATA;
-	}
-	public void setFECINBACKDATA(Date fECINBACKDATA) {
-		FECINBACKDATA = fECINBACKDATA;
-	}
-	public Date getFECFINBACKDATA() {
-		return FECFINBACKDATA;
-	}
-	public void setFECFINBACKDATA(Date fECFINBACKDATA) {
-		FECFINBACKDATA = fECFINBACKDATA;
-	}
-	public Integer getTOTALREGBACKDATA() {
-		return TOTALREGBACKDATA;
-	}
-	public void setTOTALREGBACKDATA(Integer tOTALREGBACKDATA) {
-		TOTALREGBACKDATA = tOTALREGBACKDATA;
-	}
-	public Date getFECINBACKIMG() {
-		return FECINBACKIMG;
-	}
-	public void setFECINBACKIMG(Date fECINBACKIMG) {
-		FECINBACKIMG = fECINBACKIMG;
-	}
-	public Date getFECFINBACKIMG() {
-		return FECFINBACKIMG;
-	}
-	public void setFECFINBACKIMG(Date fECFINBACKIMG) {
-		FECFINBACKIMG = fECFINBACKIMG;
-	}
-	public Integer getTOTALREGBACKIMG() {
-		return TOTALREGBACKIMG;
-	}
-	public void setTOTALREGBACKIMG(Integer tOTALREGBACKIMG) {
-		TOTALREGBACKIMG = tOTALREGBACKIMG;
-	}
-	
+
 }

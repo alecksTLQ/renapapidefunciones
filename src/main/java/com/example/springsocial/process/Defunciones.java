@@ -45,14 +45,6 @@ public class Defunciones {
 		this.modelTransaction.setEntityManager(entityManager);
 		
 	}	
-	public void SetModel() throws NumberFormatException, Exception {
-		SimpleDateFormat formato=new SimpleDateFormat();
-		this.defunciones = new TwsdefuncionesModel();
-		this.defunciones.setTIPO_ENTREGA(Long.parseLong(data.getValue("TIPO_ENTREGA").toString()));
-		this.defunciones.setPRIMER_APELLIDO(data.getValue("PRIMER_APELLIDO").toString());
-		this.defunciones.setPRIMER_NOMBRE(data.getValue("PRIMER_NOMBRE").toString());
-		//this.defunciones.setENTREGA(data.getValue("ENTREGA").toString());
-	}
 	public TwsdefuncionesModel getData() {		
 		return this.defunciones; 
 	}
@@ -60,25 +52,15 @@ public class Defunciones {
 	private void insertDefunciones() throws Exception {
 		
 		String strDateFormat = null;
-		//SimpleDateFormat sdf = new SimpleDateFormat(strDateFormat);
-		
 		Date fecha = null;
 		SimpleDateFormat formato=new SimpleDateFormat("dd/MM/yyyy");
 		fecha = formato.parse(data.getValue("ENTREGA").toString());
 		strDateFormat = formato.format(fecha);
-		System.out.print(strDateFormat);
-		System.out.println(fecha);
-		System.out.print(data.getValue("ENTREGA"));
-		
+
 		this.defunciones = new TwsdefuncionesModel();
 		this.defunciones.setTIPO_ENTREGA(Long.parseLong(data.getValue("TIPO_ENTREGA").toString()));
 		this.defunciones.setPRIMER_APELLIDO(data.getValue("PRIMER_APELLIDO").toString());
-		this.defunciones.setPRIMER_NOMBRE(data.getValue("PRIMER_NOMBRE").toString());
-		
-		/*System.out.print(data.getValue("ENTREGA"));
-		fecha = formato.parse(data.getValue("ENTREGA").toString());
-		System.out.println(sdf.format(fecha));*/
-		
+		this.defunciones.setPRIMER_NOMBRE(data.getValue("PRIMER_NOMBRE").toString());	
 		this.defunciones.setENTREGA(strDateFormat);
 		
 		modelTransaction.saveWithFlush(defunciones);

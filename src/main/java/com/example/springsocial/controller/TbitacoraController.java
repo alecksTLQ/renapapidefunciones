@@ -32,6 +32,8 @@ import com.example.springsocial.crud.ObjectSetGet;
 import com.example.springsocial.error.CustomException;
 import com.example.springsocial.error.ErrorCode;
 import com.example.springsocial.generic.CrudController;
+import com.example.springsocial.model.TbitacoraModel;
+import com.example.springsocial.process.Bitacora;
 import com.example.springsocial.process.Defunciones;
 import com.example.springsocial.security.CurrentUser;
 import com.example.springsocial.security.UserPrincipal;
@@ -41,67 +43,34 @@ import com.example.springsocial.tools.RestResponse;
 
 @SuppressWarnings({"rawtypes", "unchecked"})
 @RestController
-@RequestMapping("defunciones")
+@RequestMapping("bitacora")
 public class TbitacoraController implements CrudController {
 	
 	@Autowired
 	private TbitcoraRepository rpBitacora; //repositorio Bitacora
-	private TwsdefuncionesRepository rpDefunciones; //repositorio Defunciones
+	//private TwsdefuncionesRepository rpDefunciones; //repositorio Defunciones
 	
 	@Autowired
 	private ElementRepository elementRepository;
 	private EntitiRepository entitiRepository;
 	@PersistenceUnit
 	private EntityManagerFactory entityManagerFactory;
-	private String moduloName = "TwsdefuncionesModel";
+	private String moduloName = "TbitacoraModel";
 	
-	private Defunciones defunciones = new Defunciones();//objeto del modelo Defunciones
+	private Bitacora bitacora = new Bitacora();
 	
 	private CRUD crud = new CRUD();
 	
 	@PostConstruct
 	private void init() {
-		crud.setRepository(this.rpDefunciones);
+		crud.setRepository(this.rpBitacora);
 		crud.setModelName(this.moduloName);
 		crud.setEntitiRepository(this.entitiRepository);
 		crud.setElementRepository(this.elementRepository);
-		repositories.put(this.moduloName, this.rpDefunciones);
+		repositories.put(this.moduloName, this.rpBitacora);
 	}	
 	
-	@Override
-	@PostMapping("create") //INSERCION A TABLA T_WS_DEFUNCIONES
-	public RestResponse create(@CurrentUser UserPrincipal userPrincipal, HttpServletRequest request, @RequestBody Object createElement) {
-		
-		String AuthTokenHeader = request.getHeader("Authorization");
-		RestResponse response = new RestResponse();
-		ObjectSetGet data = new ObjectSetGet();
-		
-		try {
-			
-			data.setObject(createElement);
-			if(data.getValue("ENTREGA")==null || data.getValue("ENTREGA")=="") return new RestResponse(null, new CustomException("completar el campo entrega", ErrorCode.REST_CREATE, this.getClass().getSimpleName(),0));
-			if(data.getValue("TIPO_ENTREGA")==null || data.getValue("TIPO_ENTREGA")=="") return new RestResponse(null, new CustomException("completar el campo entrega", ErrorCode.REST_CREATE, this.getClass().getSimpleName(),0));
-			if(data.getValue("PRIMER_NOMBRE")==null || data.getValue("PRIMER_NOMBRE")=="") return new RestResponse(null, new CustomException("completar el campo entrega", ErrorCode.REST_CREATE, this.getClass().getSimpleName(),0));
-			if(data.getValue("PRIMER_APELLIDO")==null || data.getValue("PRIMER_APELLIDO")=="") return new RestResponse(null, new CustomException("completar el campo entrega", ErrorCode.REST_CREATE, this.getClass().getSimpleName(),0));
-			
-			
-			defunciones.setEntityManagerFactory(entityManagerFactory);
-			defunciones.setUserPrincipal(userPrincipal);
-			defunciones.SetData(createElement);
-			defunciones.Save();
-			
-			if(defunciones.GetResponse().getError()!=null) throw new Exception(defunciones.GetResponse().getError().toString());
-			else {
-				response.setData("datos insertados"+defunciones.GetResponse().getData());
-			}
-		}catch(Exception e) {
-			response.setError(e);
-		}
-
-		return response;
-	}
-	
-	
+	/*OBTIENE FECHA MAXIMA DE TBITACORA*/
 	@GetMapping("FechaMax/{id}")
 	public RestResponse list(@CurrentUser UserPrincipal userPrincipal, HttpServletRequest request,Long id) {
 		
@@ -124,104 +93,38 @@ public class TbitacoraController implements CrudController {
 		return response;
 	}
 	
-	/* METODO DE PROCESAMIENTO  */
-	@GetMapping("archivo")
-	@SuppressWarnings("unused")
-	public RestResponse Proceso() {
-		MetodoEncriptacion decriptador = new MetodoEncriptacion();
+	@PostMapping("createBitacora")
+	public RestResponse create(@CurrentUser UserPrincipal userPrincipal, HttpServletRequest request, @RequestBody Object createElement) {
+		String AuthTokenHeader = request.getHeader("Authorization");
 		RestResponse response = new RestResponse();
-		JSONObject objeto = new JSONObject();
-		ExtraerDatos datos = new ExtraerDatos();
+		ObjectSetGet data = new ObjectSetGet();
 		
-		String key, usuario, pw, entidad, error="", ESTATUS="";
-		Date fecha = new Date();
-		Integer coderror = 0, Cantidad_Reg_Linea=0;
-		
-			
 		try {
 			
-			try {
-				
-				key = datos.leerArchivo("clave");
-				usuario = decriptador.desencriptar(datos.leerArchivo("usuario"), key);
-				pw = decriptador.desencriptar(datos.leerArchivo("password"), key);
-				entidad = datos.leerArchivo("entidad");
-				
-				/*START RECUPERAR DATOS DEL WS*/
-				JSONParser parser = new JSONParser();
-				
-				Object datojson = parser.parse(new FileReader("C:\\Users\\Desarrollo06\\Documents\\apuntes\\archio.json"));
-				JSONObject contenedor = (JSONObject) datojson;
-				//almacena todo el arreglo de datos
-				JSONArray array = (JSONArray) contenedor.get("datos");
-				
-				//obtiene fila x fial del arreglo de datos
-				//JSONObject fila = (JSONObject) array.get(0);
-				
-				
-				/*END RECUPERAR DATOS DEL WS*/
-				
-				
-				
-			}catch(Exception e) {
-				ESTATUS = "0";
-				System.out.print(error);
-				System.out.println(e.getMessage());
+			data.setObject(createElement);
+			if(data.getValue("ESTATUS")==null || data.getValue("ESTATUS")=="") return new RestResponse(null, new CustomException("el estatus no puede esta vacio", ErrorCode.REST_CREATE, this.getClass().getSimpleName(),0));
+			if(data.getValue("ENTREGA")==null || data.getValue("ESTATUS")=="") return new RestResponse(null, new CustomException("el estatus no puede esta vacio", ErrorCode.REST_CREATE, this.getClass().getSimpleName(),0));
+			if(data.getValue("TIPOENTREGA")==null || data.getValue("TIPOENTREGA")=="") return new RestResponse(null, new CustomException("el estatus no puede esta vacio", ErrorCode.REST_CREATE, this.getClass().getSimpleName(),0));
+			if(data.getValue("FECHASEMISIONES")==null || data.getValue("FECHASEMISIONES")=="") return new RestResponse(null, new CustomException("el estatus no puede esta vacio", ErrorCode.REST_CREATE, this.getClass().getSimpleName(),0));
+			if(data.getValue("FECHAINCONSUMO")==null || data.getValue("FECHAINCONSUMO")=="") return new RestResponse(null, new CustomException("el estatus no puede esta vacio", ErrorCode.REST_CREATE, this.getClass().getSimpleName(),0));
+			if(data.getValue("FECHAFINCONSUMO")==null || data.getValue("FECHAFINCONSUMO")=="") return new RestResponse(null, new CustomException("el estatus no puede esta vacio", ErrorCode.REST_CREATE, this.getClass().getSimpleName(),0));
+			
+			bitacora.setEntityManagerFactory(entityManagerFactory);
+			bitacora.setUserPrincipal(userPrincipal);
+			bitacora.setData(createElement);
+			bitacora.save();
+			
+			if(bitacora.GetResponse().getError()!=null) throw new Exception(bitacora.GetResponse().getError().toString());
+			else {
+				response.setData("datos insertados bitacora "+bitacora.GetResponse().getData());
 			}
-			
-			
-			if(Cantidad_Reg_Linea==0) {
-				ESTATUS="1";
-				
-				
-				InsercionDefunciones();
-				
-				/*START PREPARAR BACKUP*/
-				JSONParser parser = new JSONParser();
-				try {
-					Object obj = parser.parse(new FileReader("C:\\Users\\Desarrollo06\\Documents\\apuntes\\archio.json"));
-					JSONObject json = (JSONObject) obj;
-					System.out.println("JSON LEIDO: "+	json);
-					
-					JSONArray array = (JSONArray) json.get("datos");
-					response.setData(array);
-					
-					FileWriter fichero = new FileWriter("C:\\Users\\Desarrollo06\\Documents\\apuntes\\fichero.txt");
-					
-					for(int x =0; x<array.size();x++) {
-						JSONObject json1 = (JSONObject) array.get(x);
-						fichero.write(" "+json1.get("nombre") +"|"+json1.get("apellido")+"|"+json1.get("direccion")+" \n");
-					}
-					
-					fichero.close();
-					
-				}catch(FileNotFoundException e) {
-					System.out.print(e);
-				}catch(IOException e) {
-					System.out.print(e);
-				}catch(ParseException e) {
-					System.out.print(e);
-				}
-				/*END PREPARAR BACKUP*/
-				
-				
-				
-				/*START INSERT BITACORA*/
-				
-				/*END INSERT BITACORA*/
-			}
-			
 			
 		}catch(Exception e) {
-			System.out.print(e.getMessage());
+			response.setError(e);
 		}
 		
+		
 		return response;
-		
-	}
-	
-	public void InsercionDefunciones() {
-		
 	}
 	
 	
