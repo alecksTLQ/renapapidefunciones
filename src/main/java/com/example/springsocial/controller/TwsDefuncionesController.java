@@ -58,6 +58,14 @@ public class TwsDefuncionesController implements CrudController {
 	
 	private CRUD crud = new CRUD();
 	
+	public void setEntityManagerFactory(EntityManagerFactory entityManagerFactory) {
+		if(entityManagerFactory!=null) {
+			this.entityManagerFactory = entityManagerFactory;
+		}else {
+			System.out.print("dentro del else");
+		}
+	}
+	
     @PostConstruct
     private void init() {
     	crud.setRepository(this.rpDefunciones);
@@ -103,7 +111,7 @@ public class TwsDefuncionesController implements CrudController {
     
     
     /* METODO DE PROCESAMIENTO  */
-	@GetMapping("archivo")
+	
 	@SuppressWarnings("unused")
 	public RestResponse Proceso() {
 		MetodoEncriptacion decriptador = new MetodoEncriptacion();
@@ -185,8 +193,10 @@ public class TwsDefuncionesController implements CrudController {
 				/*START INSERT BITACORA*/
 				
 				TbitacoraController bitacora = new TbitacoraController();
-				TbitacoraModel mdlBitacora = new TbitacoraModel();
-				bitacora.create(null, null, mdlBitacora);
+				TbitacoraModel mdlBitacora = new TbitacoraModel("1000","29/04/2021",11,"29/04/2021","29/04/2021","29/04/2021");
+				//bitacora.createBitaroca(mdlBitacora);
+				bitacora.setEntityManagerFactory(entityManagerFactory);
+				bitacora.createBitaroca(mdlBitacora);
 				
 				/*END INSERT BITACORA*/
 			}

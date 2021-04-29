@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Date;
 
+import com.example.springsocial.repository.BitacoraServiceImp;
 import com.example.springsocial.repository.ElementRepository;
 import com.example.springsocial.repository.EntitiRepository;
 import com.example.springsocial.repository.TbitcoraRepository;
@@ -42,12 +43,13 @@ import com.example.springsocial.tools.MetodoEncriptacion;
 import com.example.springsocial.tools.RestResponse;
 
 @SuppressWarnings({"rawtypes", "unchecked"})
-@RestController
-@RequestMapping("bitacora")
+//@RestController
+//@RequestMapping("Bitacora")
 public class TbitacoraController implements CrudController {
 	
 	@Autowired
 	private TbitcoraRepository rpBitacora; //repositorio Bitacora
+	private BitacoraServiceImp srvBitacora;
 	//private TwsdefuncionesRepository rpDefunciones; //repositorio Defunciones
 	
 	@Autowired
@@ -61,6 +63,14 @@ public class TbitacoraController implements CrudController {
 	
 	private CRUD crud = new CRUD();
 	
+	public void setEntityManagerFactory(EntityManagerFactory entityManagerFactory) {
+		if(entityManagerFactory!=null) {
+			this.entityManagerFactory = entityManagerFactory;
+		}else {
+			System.out.print("dentro del else");
+		}
+	}
+	
 	@PostConstruct
 	private void init() {
 		crud.setRepository(this.rpBitacora);
@@ -71,8 +81,8 @@ public class TbitacoraController implements CrudController {
 	}	
 	
 	/*OBTIENE FECHA MAXIMA DE TBITACORA*/
-	@GetMapping("FechaMax/{id}")
-	public RestResponse list(@CurrentUser UserPrincipal userPrincipal, HttpServletRequest request,Long id) {
+	//@GetMapping("FechaMax/{id}")
+	public RestResponse list(@CurrentUser UserPrincipal userPrincipal, HttpServletRequest request,Integer id) {
 		
 		RestResponse response = new RestResponse();
 		
@@ -93,9 +103,10 @@ public class TbitacoraController implements CrudController {
 		return response;
 	}
 	
-	@PostMapping("createBitacora")
-	public RestResponse create(@CurrentUser UserPrincipal userPrincipal, HttpServletRequest request, @RequestBody Object createElement) {
-		String AuthTokenHeader = request.getHeader("Authorization");
+	//@PostMapping("createBitacora")
+	public RestResponse createBitaroca(Object createElement) {
+		init();
+		//String AuthTokenHeader = request.getHeader("Authorization");
 		RestResponse response = new RestResponse();
 		ObjectSetGet data = new ObjectSetGet();
 		
@@ -104,13 +115,12 @@ public class TbitacoraController implements CrudController {
 			data.setObject(createElement);
 			if(data.getValue("ESTATUS")==null || data.getValue("ESTATUS")=="") return new RestResponse(null, new CustomException("el estatus no puede esta vacio", ErrorCode.REST_CREATE, this.getClass().getSimpleName(),0));
 			if(data.getValue("ENTREGA")==null || data.getValue("ESTATUS")=="") return new RestResponse(null, new CustomException("el estatus no puede esta vacio", ErrorCode.REST_CREATE, this.getClass().getSimpleName(),0));
-			if(data.getValue("TIPOENTREGA")==null || data.getValue("TIPOENTREGA")=="") return new RestResponse(null, new CustomException("el estatus no puede esta vacio", ErrorCode.REST_CREATE, this.getClass().getSimpleName(),0));
+			if(data.getValue("TIPOENTREGA")==null) return new RestResponse(null, new CustomException("el estatus no puede esta vacio", ErrorCode.REST_CREATE, this.getClass().getSimpleName(),0));
 			if(data.getValue("FECHASEMISIONES")==null || data.getValue("FECHASEMISIONES")=="") return new RestResponse(null, new CustomException("el estatus no puede esta vacio", ErrorCode.REST_CREATE, this.getClass().getSimpleName(),0));
 			if(data.getValue("FECHAINCONSUMO")==null || data.getValue("FECHAINCONSUMO")=="") return new RestResponse(null, new CustomException("el estatus no puede esta vacio", ErrorCode.REST_CREATE, this.getClass().getSimpleName(),0));
 			if(data.getValue("FECHAFINCONSUMO")==null || data.getValue("FECHAFINCONSUMO")=="") return new RestResponse(null, new CustomException("el estatus no puede esta vacio", ErrorCode.REST_CREATE, this.getClass().getSimpleName(),0));
 			
 			bitacora.setEntityManagerFactory(entityManagerFactory);
-			bitacora.setUserPrincipal(userPrincipal);
 			bitacora.setData(createElement);
 			bitacora.save();
 			
@@ -127,6 +137,16 @@ public class TbitacoraController implements CrudController {
 		return response;
 	}
 	
+	public String crearBitacora(TbitacoraModel model) {
+		
+		try {
+			srvBitacora.guardar(model);
+		}catch(Exception e) {
+			System.out.print(e);
+		}
+		
+		return "";
+	}
 	
 	
 }

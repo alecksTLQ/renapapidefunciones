@@ -21,7 +21,7 @@ public class TbitacoraModel {
 	@Id
 	@NotNull
 	@Column(name="TIPOENTREGA")
-	private Long tipoentrega;
+	private Integer TIPOENTREGA;
 	@NotEmpty
 	@Column(name="FECHASEMISIONES")
 	private String FECHASEMISIONES;
@@ -31,6 +31,7 @@ public class TbitacoraModel {
 	@NotEmpty
 	@Column(name="FECHAFINCONSUMO")
 	private String FECHAFINCONSUMO;
+	
 	
 	
 	/*@Column(name="TOTALREGCONSUMO")
@@ -62,24 +63,31 @@ public class TbitacoraModel {
 	@Column(name="TOTALREGBACKIMG")
 	private Integer TOTALREGBACKIMG;*/
 	
+
 	
-	
-	
-	public TbitacoraModel() {
-		
-	}
-	
-	public TbitacoraModel(@NotEmpty String eSTATUS, @NotEmpty String eNTREGA, @NotNull Long tipoentrega,
+	public TbitacoraModel(@NotEmpty String eSTATUS, @NotEmpty String eNTREGA, @NotNull Integer tIPOENTREGA,
 			@NotEmpty String fECHASEMISIONES, @NotEmpty String fECHAINCONSUMO, @NotEmpty String fECHAFINCONSUMO) {
 		super();
 		ESTATUS = eSTATUS;
 		ENTREGA = eNTREGA;
-		this.tipoentrega = tipoentrega;
+		TIPOENTREGA = tIPOENTREGA;
 		FECHASEMISIONES = fECHASEMISIONES;
 		FECHAINCONSUMO = fECHAINCONSUMO;
 		FECHAFINCONSUMO = fECHAFINCONSUMO;
 	}
 
+	public Integer getTIPOENTREGA() {
+		return TIPOENTREGA;
+	}
+
+	public void setTIPOENTREGA(Integer tIPOENTREGA) {
+		TIPOENTREGA = tIPOENTREGA;
+	}
+
+	public TbitacoraModel() {
+		
+	}
+	
 	public String getESTATUS() {
 		return ESTATUS;
 	}
@@ -93,12 +101,6 @@ public class TbitacoraModel {
 		ENTREGA = eNTREGA;
 	}
 	
-	public Long getTipoentrega() {
-		return tipoentrega;
-	}
-	public void setTipoentrega(Long tipoentrega) {
-		this.tipoentrega = tipoentrega;
-	}
 	public String getFECHASEMISIONES() {
 		return FECHASEMISIONES;
 	}

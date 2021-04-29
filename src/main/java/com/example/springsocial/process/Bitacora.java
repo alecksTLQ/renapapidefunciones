@@ -30,7 +30,11 @@ public class Bitacora {
 		this.userPrincipal = userPrincipal;
 	}
 	public void setEntityManagerFactory(EntityManagerFactory entityManagerFactory) {
-		if(entityManagerFactory!=null) this.entityManagerFactory = entityManagerFactory;
+		if(entityManagerFactory!=null) {
+			this.entityManagerFactory = entityManagerFactory;
+		}else {
+			System.out.print("dentro del else");
+		}
 	}
 	public void setData(Object createElement) {
 		data.setObject(createElement);
@@ -51,7 +55,7 @@ public class Bitacora {
 		this.bitacora = new TbitacoraModel();
 		this.bitacora.setESTATUS(data.getValue("ESTATUS").toString());
 		this.bitacora.setENTREGA(data.getValue("ENTREGA").toString());
-		this.bitacora.setTipoentrega(Long.parseLong(data.getValue("TIPOENTREGA").toString()));
+		this.bitacora.setTIPOENTREGA(Integer.parseInt(data.getValue("TIPOENTREGA").toString()));
 		this.bitacora.setFECHASEMISIONES(data.getValue("FECHASEMISIONES").toString());
 		this.bitacora.setFECHAINCONSUMO(data.getValue("FECHAINCONSUMO").toString());
 		this.bitacora.setFECHAFINCONSUMO(data.getValue("FECHAFINCONSUMO").toString());
